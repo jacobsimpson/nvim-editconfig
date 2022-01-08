@@ -23,21 +23,21 @@ lua <<EOF
 EOF
 
 " 2. Lua code can be built in a pure Lua file and imported as a module from
-" the VimL file. `myluamodule` is a directory in the `lua` folder. Because
-" only the `myluamodule` directory is specified, Neovim will look for a
+" the VimL file. `editconfig` is a directory in the `lua` folder. Because
+" only the `editconfig` directory is specified, Neovim will look for a
 " `lua.lua` file, then an `init.lua` file in that directory. In this case, it
-" will find the `lua\myluamodule\init.lua` file.
-lua myluamodule = require("myluamodule")
+" will find the `lua\editconfig\init.lua` file.
+lua editconfig = require("editconfig")
 
 " Once the `require` statement completes, the `global_lua_function` Lua
-" function defined in `lua\myluamodule\init.lua` will be available without
+" function defined in `lua\editconfig\init.lua` will be available without
 " qualification.
 lua global_lua_function()
 
 " Once the `require` statement completes, the `local_lua_function` Lua
-" function defined in `lua\myluamodule\init.lua` will be available when
+" function defined in `lua\editconfig\init.lua` will be available when
 " qualified with the module name.
-lua myluamodule.local_lua_function()
+lua editconfig.local_lua_function()
 
 " A Lua function can be mapped to a key. Here, Alt-Ctrl-G will echo a message.
 " This is a mapping to the function that wasn't carefully scoped in the Lua
@@ -51,8 +51,8 @@ nmap <M-C-G> :lua global_lua_function()<CR>
 " function that was qualified with `local`, so it is only available outside
 " the module when qualified with the module name.  (See the `require`
 " statement above.)
-nmap <M-C-L> :lua myluamodule.local_lua_function()<CR>
+nmap <M-C-L> :lua editconfig.local_lua_function()<CR>
 
 " Lua code can be defined in other files, rather than just `lua.lua` or
-" `init.lua`. Here, Lua code is defined in `lua\myluamodule\definestuff.lua`.
-lua require("myluamodule.definestuff").show_stuff()
+" `init.lua`. Here, Lua code is defined in `lua\editconfig\definestuff.lua`.
+lua require("editconfig.definestuff").show_stuff()

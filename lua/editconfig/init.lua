@@ -10,14 +10,14 @@
 -- normally try to follow the pattern demonstrated by `local_lua_function`. The
 -- right choice might depend on your circumstances.
 function global_lua_function()
-    print "nvim-edit-config.myluamodule.init global_lua_function: hello"
+    print "nvim-edit-config.editconfig.init global_lua_function: hello"
 end
 
 -- This function is qualified with `local`, so it's visibility is restricted to
 -- this file. It is exported below in the return value from this module using a
 -- Lua pattern that allows symbols to be selectively exported from a module.
 local function local_lua_function()
-    print "nvim-edit-config.myluamodule.init local_lua_function: hello"
+    print "nvim-edit-config.editconfig.init local_lua_function: hello"
 end
 
 -- Returning a Lua table at the end allows fine control of the symbols that
@@ -25,10 +25,10 @@ end
 -- importer to decide what name to use in their own code.
 --
 -- Examples of how this module is imported:
---    local mine = require('myluamodule')
+--    local mine = require('editconfig')
 --    mine.local_lua_function()
---    local myluamodule = require('myluamodule')
---    myluamodule.local_lua_function()
+--    local editconfig = require('editconfig')
+--    editconfig.local_lua_function()
 return {
     local_lua_function = local_lua_function,
 }
