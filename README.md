@@ -23,3 +23,8 @@ Plug 'jacobsimpson/nvim-editconfig'
 After running `:PlugInstall`, the files should appear in your `~/.config/nvim/plugged` directory (or
 whatever path you have configured for plugins).
 
+## Development
+
+```
+nvim --cmd 'set rtp+=nvim-edit-config'
+```
