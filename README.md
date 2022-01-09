@@ -6,9 +6,9 @@ configuration.
 This plugin is not generic. It is unlikely that anyone other than me will derive value from it.
 
 -   ,cf => Configuration File - opens a selection list of configuration files.
--   gf  => In the `plugins.vim` file, this is overridden to navigate to included files.
--   ,ca => In the `plugins.vim` file, this is configured to add a new include, create the new file
-    to include, and to open the new include file.
+-   gf  => Go File - In the `plugins.vim` file, this is overridden to navigate to included files.
+-   ,ca => Configuration Add - In the `plugins.vim` file, this is configured to add a new include,
+    create the new file to include, and to open the new include file.
 
 ## Installation
 
