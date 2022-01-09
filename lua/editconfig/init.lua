@@ -1,34 +1,39 @@
--- Since this function doesn't have a `local` qualifier, it will end up in the
--- global namespace, and can be invoked from anywhere using:
+local pickers = require "telescope.pickers"
+local finders = require "telescope.finders"
+local conf = require("telescope.config").values
+local actions = require "telescope.actions"
+local action_state = require "telescope.actions.state"
+
+local baseDir = "~/dotfiles/nvim/"
+
+-- By convention, nvim Lua plugins include a setup function that takes a table
+-- so that users of the plugin can configure it using this pattern:
 --
--- :lua global_lua_function()
---
--- Personally, I feel that kind of global namespace pollution should probably
--- be avoided in order to prevent other modules from accidentally clashing with
--- my function names. While `global_lua_function` seems kind of rare, if I had
--- a function called `connect` in my module, I would be more concerned. So I
--- normally try to follow the pattern demonstrated by `local_lua_function`. The
--- right choice might depend on your circumstances.
-function global_lua_function()
-    print "nvim-edit-config.editconfig.init global_lua_function: hello"
+-- require'editconfig'.setup({p1 = "value1"})
+local function setup(parameters)
+    -- Something weird. When this vim.cmd is used, the keymapping is made, and ,ec activates the
+    -- telescope picker, but not results are visible in the floating window. However, when this
+    -- exact mapping moved into a VimL file, it works correctly.
+    --vim.cmd [[ map <silent> ,ec :lua require('editconfig').add_plugin()<CR> ]]
 end
 
--- This function is qualified with `local`, so it's visibility is restricted to
--- this file. It is exported below in the return value from this module using a
--- Lua pattern that allows symbols to be selectively exported from a module.
-local function local_lua_function()
-    print "nvim-edit-config.editconfig.init local_lua_function: hello"
+local function add_plugin()
+    vim.api.nvim_put({ '', [[call SourceConfig("plugins/xyz.vim")]], '', '' }, "", false, true)
+    vim.api.nvim_command('edit ' .. baseDir .. 'plugins/xyz.vim')
 end
 
--- Returning a Lua table at the end allows fine control of the symbols that
--- will be available outside this file. By returning the table, it allows the
--- importer to decide what name to use in their own code.
---
--- Examples of how this module is imported:
---    local mine = require('editconfig')
---    mine.local_lua_function()
---    local editconfig = require('editconfig')
---    editconfig.local_lua_function()
+local function go_file()
+    local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+    local line = vim.api.nvim_buf_get_lines(0, row-1, row, false)[1]
+    local _, _, p = string.find(line, [[SourceConfig%("(.-)"%)]])
+
+    if p ~= nil then
+        vim.api.nvim_command('edit ' .. baseDir .. p)
+    end
+end
+
 return {
-    local_lua_function = local_lua_function,
+    setup      = setup,
+    add_plugin = add_plugin,
+    go_file    = go_file,
 }
