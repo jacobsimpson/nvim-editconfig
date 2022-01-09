@@ -17,9 +17,32 @@ local function setup(parameters)
     --vim.cmd [[ map <silent> ,ec :lua require('editconfig').add_plugin()<CR> ]]
 end
 
+local function process_input(plugin_name)
+    if plugin_name == nil or plugin_name == "" then
+        return
+    end
+
+    local _, _, short_name = string.find(plugin_name, "/(.*)")
+    local relative_path = string.format("plugins/%s.vim", short_name)
+
+    -- plugin_name = 'jiangmiao/auto-pairs'
+    vim.api.nvim_put({
+        '',
+        string.format([[call SourceConfig("%s")]], relative_path),
+        '',
+        ''
+    }, "", false, true)
+    vim.api.nvim_command(string.format('edit %s/%s', baseDir, relative_path))
+    vim.api.nvim_put({
+        '',
+        string.format([[Plug '%s']], plugin_name),
+        '',
+        ''
+    }, "", false, true)
+end
+
 local function add_plugin()
-    vim.api.nvim_put({ '', [[call SourceConfig("plugins/xyz.vim")]], '', '' }, "", false, true)
-    vim.api.nvim_command('edit ' .. baseDir .. 'plugins/xyz.vim')
+    vim.ui.input("Plugin to add: ", process_input)
 end
 
 local function go_file()
